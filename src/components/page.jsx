@@ -41,6 +41,7 @@ export class Page extends Component {
             <br />
             For basic commands type <strong>cmd</strong>
           </p>
+		  <br></br>
 
           {this.state.displayEverything.map((l) => {
             if (l.type === "line") {
