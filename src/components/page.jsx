@@ -89,7 +89,7 @@ export class Page extends Component {
 							);
 						} else if (l.type === "cat") {
 							return <Cat key={l.id} line={l}></Cat>;
-						}
+						}return null;
 					})}
 				</div>
 			</div>
