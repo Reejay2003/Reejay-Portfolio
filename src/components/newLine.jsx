@@ -30,7 +30,7 @@ export class NewLine extends Component {
 
       const fragment = parts[1] || "";
 
-      const newMatches = COMMANDS.filter(cmd =>
+      const newMatches = COMMANDS.filter((cmd) =>
         cmd.startsWith(fragment.toLowerCase())
       );
 
@@ -61,25 +61,35 @@ export class NewLine extends Component {
   handleSubmit = (e) => {
     if (e.key === "Enter") {
       this.props.handelWhatever(this.state.value, this.props.line.id);
+      this.setState({ value: "" });
     }
   };
 
   render() {
+    const { line, displayInput } = this.props;
+
     return (
-    <div className="flex items-center terminal">
-		<span className="prompt"></span>
-		<input
-			autoFocus
-			value={this.state.value}
-			onChange={this.handleChange}
-			onKeyDown={(e) => {
-			this.handleKeyDown(e);
-			this.handleSubmit(e);
-			}}
-			spellCheck={false}
-			className="terminal-input"
-		/>
-	</div>
+      <div className="flex items-center terminal">
+        <span className="prompt"></span>
+
+        {displayInput ? (
+          <input
+            autoFocus
+            value={this.state.value}
+            onChange={this.handleChange}
+            onKeyDown={(e) => {
+              this.handleKeyDown(e);
+              this.handleSubmit(e);
+            }}
+            spellCheck={false}
+            className="terminal-input"
+          />
+        ) : (
+          <span className="new-output">
+            {typeof line.value === "string" ? line.value : ""}
+          </span>
+        )}
+      </div>
     );
   }
 }

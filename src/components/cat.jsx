@@ -2,11 +2,6 @@ import React, { Component } from "react";
 import githubLogo from "../assets/GitHub-Mark-Light-32px.png";
 
 export class Cat extends Component {
-  state = {
-    type: this.props.line.type,
-    value: this.props.line.value
-  };
-
   /* spacing + separation helpers */
   responseStyle = {
     marginTop: "20px",
@@ -120,15 +115,6 @@ export class Cat extends Component {
     ]
   };
 
-  render() {
-    return (
-      <>
-        <p className="prompt">{this.props.line.value}</p>
-        {this.handleCommand()}
-      </>
-    );
-  }
-
   wrap = (content) => (
     <div className="result" style={this.responseStyle}>
       {this.renderSeparator()}
@@ -137,7 +123,14 @@ export class Cat extends Component {
   );
 
   handleCommand = () => {
-    const navigation = this.state.value.split(" ")[1];
+    const line = this.props.line;
+    const value = line && typeof line.value === "string" ? line.value : "";
+
+    if (!value) {
+      return this.wrap(<p>Invalid command</p>);
+    }
+
+    const navigation = value.split(" ")[1];
     if (!navigation) return this.wrap(<p>Oops, wrong input</p>);
 
     const lower = navigation.toLowerCase();
@@ -150,34 +143,19 @@ export class Cat extends Component {
         this.information.education.map((e, i) => <p key={i}>{e}</p>)
       );
 
-    /* EXPERIENCE — CLEARLY SEPARATED */
     if (lower === "experience" || lower === "exp")
       return this.wrap(
         this.information.experience.map((exp, i) => (
           <div key={i} style={{ marginBottom: "30px" }}>
-            {/* Title */}
-            <p style={{ fontWeight: "bold", letterSpacing: "0.6px" }}>
+            <p style={{ fontWeight: "bold" }}>
               [{exp.role}] — {exp.company} | {exp.duration}
             </p>
-
-            {/* Underline */}
-            <p style={{ opacity: 0.5 }}>
-              ----------------------------------------
-            </p>
-
-            {/* Points */}
+            <p style={{ opacity: 0.5 }}>----------------------------------------</p>
             {exp.points.map((p, j) => (
               <p key={j} style={{ paddingLeft: "16px" }}>
                 • {p}
               </p>
             ))}
-
-            {/* Divider between internships */}
-            {i !== this.information.experience.length - 1 && (
-              <p style={{ opacity: 0.25, marginTop: "18px" }}>
-                ─────────────────────────────────
-              </p>
-            )}
           </div>
         ))
       );
@@ -232,6 +210,18 @@ export class Cat extends Component {
 
     return this.wrap(<p>Oops, wrong input</p>);
   };
+
+  render() {
+    const line = this.props.line;
+    const value = line && typeof line.value === "string" ? line.value : "";
+
+    return (
+      <>
+        <p className="prompt">{value}</p>
+        {this.handleCommand()}
+      </>
+    );
+  }
 }
 
 export default Cat;
