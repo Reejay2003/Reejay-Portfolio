@@ -135,15 +135,15 @@ export class Cat extends Component {
 
     const lower = navigation.toLowerCase();
 
-    if (lower === "about")
+    if (lower === "about" || lower === "About" || lower === "About.txt")
       return this.wrap(<p>{this.information.about}</p>);
 
-    if (lower === "education")
+    if (lower === "education" || lower === "Education" || lower === "Education.txt")
       return this.wrap(
         this.information.education.map((e, i) => <p key={i}>{e}</p>)
       );
 
-    if (lower === "experience" || lower === "exp")
+    if (lower === "experience" || lower === "exp" || lower === "Experience.txt" || lower === "Experience")
       return this.wrap(
         this.information.experience.map((exp, i) => (
           <div key={i} style={{ marginBottom: "30px" }}>
@@ -160,7 +160,7 @@ export class Cat extends Component {
         ))
       );
 
-    if (lower === "skills")
+    if (lower === "skills" || lower === "Skills" || lower === "Skills.txt")
       return this.wrap(
         <>
           <p><strong>Languages:</strong> {this.information.skills.languages}</p>
@@ -170,17 +170,17 @@ export class Cat extends Component {
         </>
       );
 
-    if (lower === "achievements")
+    if (lower === "achievements" || lower === "achievement" || lower === "Achievements.txt")
       return this.wrap(
         this.information.achievements.map((a, i) => <p key={i}>• {a}</p>)
       );
 
-    if (lower === "por")
+    if (lower === "por" || lower === "Por" || lower === "Por.txt")
       return this.wrap(
         this.information.por.map((p, i) => <p key={i}>• {p}</p>)
       );
 
-    if (lower === "projects" || lower === "project")
+    if (lower === "projects" || lower === "project" || lower === "Projects.txt" || lower === "Project.txt")
       return this.wrap(
         this.information.projects.map((p, i) => (
           <p key={i}>
@@ -196,7 +196,7 @@ export class Cat extends Component {
       );
 
     if (
-      ["social", "socials", "contact", "contacts", "contactme", "contact_me"].includes(lower)
+      ["social", "socials","social.txt","socials.txt", "contact","contact.txt","contacts.txt", "contacts", "contactme", "contact_me"].includes(lower)
     )
       return this.wrap(
         this.information.social.map((s, i) => (
