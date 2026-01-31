@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import githubLogo from "../assets/GitHub-Mark-Light-32px.png";
 
 export class Cat extends Component {
-  /* spacing + separation helpers */
   responseStyle = {
     marginTop: "20px",
     marginBottom: "32px",
@@ -124,33 +123,38 @@ export class Cat extends Component {
 
   handleCommand = () => {
     const line = this.props.line;
-    const value = line && typeof line.value === "string" ? line.value : "";
+    const value =
+      line && typeof line.value === "string" ? line.value.trim() : "";
 
-    if (!value) {
-      return this.wrap(<p>Invalid command</p>);
-    }
+    if (!value) return this.wrap(<p>Invalid command</p>);
 
-    const navigation = value.split(" ")[1];
-    if (!navigation) return this.wrap(<p>Oops, wrong input</p>);
+    // ✅ FIXED COMMAND PARSING
+    const command = value.replace(/^cat\s+/i, "").trim().toLowerCase();
 
-    const lower = navigation.toLowerCase();
+    if (!command) return this.wrap(<p>Oops, wrong input</p>);
 
-    if (lower === "about" || lower === "About" || lower === "About.txt")
+    if (command === "about" || command === "about.txt")
       return this.wrap(<p>{this.information.about}</p>);
 
-    if (lower === "education" || lower === "Education" || lower === "Education.txt")
+    if (command === "education" || command === "education.txt")
       return this.wrap(
         this.information.education.map((e, i) => <p key={i}>{e}</p>)
       );
 
-    if (lower === "experience" || lower === "exp" || lower === "Experience.txt" || lower === "Experience")
+    if (
+      command === "experience" ||
+      command === "exp" ||
+      command === "experience.txt"
+    )
       return this.wrap(
         this.information.experience.map((exp, i) => (
           <div key={i} style={{ marginBottom: "30px" }}>
             <p style={{ fontWeight: "bold" }}>
               [{exp.role}] — {exp.company} | {exp.duration}
             </p>
-            <p style={{ opacity: 0.5 }}>----------------------------------------</p>
+            <p style={{ opacity: 0.5 }}>
+              ----------------------------------------
+            </p>
             {exp.points.map((p, j) => (
               <p key={j} style={{ paddingLeft: "16px" }}>
                 • {p}
@@ -160,27 +164,45 @@ export class Cat extends Component {
         ))
       );
 
-    if (lower === "skills" || lower === "Skills" || lower === "Skills.txt")
+    if (command === "skills" || command === "skills.txt")
       return this.wrap(
         <>
-          <p><strong>Languages:</strong> {this.information.skills.languages}</p>
-          <p><strong>Web:</strong> {this.information.skills.web}</p>
-          <p><strong>AI / ML:</strong> {this.information.skills.ai}</p>
-          <p><strong>Tools:</strong> {this.information.skills.tools}</p>
+          <p>
+            <strong>Languages:</strong> {this.information.skills.languages}
+          </p>
+          <p>
+            <strong>Web:</strong> {this.information.skills.web}
+          </p>
+          <p>
+            <strong>AI / ML:</strong> {this.information.skills.ai}
+          </p>
+          <p>
+            <strong>Tools:</strong> {this.information.skills.tools}
+          </p>
         </>
       );
 
-    if (lower === "achievements" || lower === "achievement" || lower === "Achievements.txt")
+    if (
+      command === "achievements" ||
+      command === "achievement" ||
+      command === "achievements.txt"
+    )
       return this.wrap(
-        this.information.achievements.map((a, i) => <p key={i}>• {a}</p>)
+        this.information.achievements.map((a, i) => (
+          <p key={i}>• {a}</p>
+        ))
       );
 
-    if (lower === "por" || lower === "Por" || lower === "Por.txt")
+    if (command === "por" || command === "por.txt")
       return this.wrap(
         this.information.por.map((p, i) => <p key={i}>• {p}</p>)
       );
 
-    if (lower === "projects" || lower === "project" || lower === "Projects.txt" || lower === "Project.txt")
+    if (
+      command === "projects" ||
+      command === "project" ||
+      command === "projects.txt"
+    )
       return this.wrap(
         this.information.projects.map((p, i) => (
           <p key={i}>
@@ -189,14 +211,27 @@ export class Cat extends Component {
               Live
             </a>{" "}
             <a href={p.linkToGithub} target="_blank" rel="noopener noreferrer">
-              <img src={githubLogo} alt="GitHub" style={{ verticalAlign: "middle" }} />
+              <img
+                src={githubLogo}
+                alt="GitHub"
+                style={{ verticalAlign: "middle" }}
+              />
             </a>
           </p>
         ))
       );
 
     if (
-      ["social", "socials","social.txt","socials.txt", "contact","contact.txt","contacts.txt", "contacts", "contactme", "contact_me"].includes(lower)
+      [
+        "social",
+        "socials",
+        "contact",
+        "contacts",
+        "contactme",
+        "contact_me",
+        "social.txt",
+        "contacts.txt"
+      ].includes(command)
     )
       return this.wrap(
         this.information.social.map((s, i) => (
@@ -208,7 +243,7 @@ export class Cat extends Component {
         ))
       );
 
-    return this.wrap(<p>Oops, wrong input</p>);
+    return this.wrap(<p>command not found</p>);
   };
 
   render() {
